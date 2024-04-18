@@ -6,9 +6,8 @@ import { auth } from '../firebaseConfig';
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Sign out from Firebase authentication
+      await signOut(auth);
       console.log('User signed out successfully!');
-      // Navigate back to the Auth screen after logout
       navigation.navigate('Auth');
     } catch (error) {
       console.error('Logout error:', error as any);
@@ -39,30 +38,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f0ead6',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 32,
+    marginBottom: 40,
+    fontWeight: 'bold',
+    color: '#654321',
   },
   button: {
     width: '80%',
-    marginBottom: 16,
-    backgroundColor: '#3498db',
+    marginBottom: 20,
+    backgroundColor: '#8b4513',
     borderRadius: 4,
-    padding: 10,
+    padding: 14,
+    alignItems: 'center',
   },
   buttonLogout: {
     width: '80%',
-    marginBottom: 16,
-    backgroundColor: '#FF0000',
+    marginBottom: 20,
+    backgroundColor: '#8b0000', 
     borderRadius: 4,
-    padding: 10,
+    padding: 14,
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
   },
 });
 

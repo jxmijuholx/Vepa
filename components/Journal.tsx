@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Modal, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth, db } from '../firebaseConfig';
 
 interface JournalEntry {
@@ -15,8 +15,8 @@ const Journal: React.FC = () => {
     const [entries, setEntries] = useState<JournalEntry[]>([]);
     const [newEntry, setNewEntry] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
-    const [editingEntryContent, setEditingEntryContent] = useState('');
+    const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
+    const navigation = useNavigation();
 
     useEffect(() => {
         const unsubscribe = onSnapshot(
@@ -40,68 +40,68 @@ const Journal: React.FC = () => {
     const handleAddEntry = async () => {
         try {
             const date = new Date().toDateString();
-            if (editingEntryId) {
-                await updateDoc(doc(db, 'journal', editingEntryId), {
-                    entry: editingEntryContent,
-                });
-            } else {
-                await addDoc(collection(db, 'journal'), {
-                    date,
-                    entry: newEntry,
-                    userId: auth.currentUser?.uid,
-                });
-            }
+            await addDoc(collection(db, 'journal'), {
+                date,
+                entry: newEntry,
+                userId: auth.currentUser?.uid,
+            });
+            alert('Entry saved successfully!');
             setNewEntry('');
-            setEditingEntryId(null);
-            setEditingEntryContent('');
             setModalVisible(false);
         } catch (error) {
-            console.error('Error adding/editing journal entry:', error);
+            console.error('Error adding journal entry:', error);
         }
     };
 
     const handleDeleteEntry = async (id: string) => {
-        try {
-            await deleteDoc(doc(db, 'journal', id));
-        } catch (error) {
-            console.error('Error deleting journal entry:', error);
-        }
+        Alert.alert(
+            "Delete Entry",
+            "Are you sure you want to delete this entry?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "OK", 
+                    onPress: async () => {
+                        try {
+                            await deleteDoc(doc(db, 'journal', id));
+                        } catch (error) {
+                            console.error('Error deleting journal entry:', error);
+                        }
+                    } 
+                }
+            ]
+        );
     };
 
-    const handleEditEntry = async (entry: JournalEntry) => {
-        try {
-            const entryDoc = await getDoc(doc(db, 'journal', entry.id));
-            if (entryDoc.exists()) {
-                setEditingEntryId(entry.id);
-                setEditingEntryContent(entryDoc.data()?.entry || '');
-                setModalVisible(true);
-            }
-        } catch (error) {
-            console.error('Error fetching entry for editing:', error);
-        }
+    const handleViewEntry = (entry: JournalEntry) => {
+        setSelectedEntry(entry);
+        setModalVisible(true);
     };
 
     const renderItem = ({ item }: { item: JournalEntry }) => (
-        <TouchableOpacity
-            onPress={() => handleEditEntry(item)}
-            style={styles.entryContainer}
-        >
+        <View style={styles.entryContainer}>
             <Text style={styles.entryDate}>{item.date}</Text>
-            <TouchableOpacity onPress={() => handleDeleteEntry(item.id)}>
-                <MaterialCommunityIcons name="delete" size={24} color="red" />
+            <TouchableOpacity onPress={() => handleViewEntry(item)}>
+                <MaterialCommunityIcons name="eye" size={24} color="blue" />
             </TouchableOpacity>
-        </TouchableOpacity>
+            <MaterialCommunityIcons name="delete" size={24} color="red" onPress={() => handleDeleteEntry(item.id)} />
+        </View>
     );
-
-    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                style={styles.addButton}
-            >
-                <Text style={styles.buttonText}>Write entry</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Write your entry here"
+                multiline
+                value={newEntry}
+                onChangeText={setNewEntry}
+            />
+            <TouchableOpacity onPress={() => handleAddEntry()} style={styles.addButton}>
+                <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
             <FlatList
                 data={entries}
@@ -116,33 +116,15 @@ const Journal: React.FC = () => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <TextInput
-                            value={editingEntryContent}
-                            onChangeText={setEditingEntryContent}
-                            placeholder="Write your entry here"
-                            multiline
-                            style={styles.entryInput}
-                        />
-                        <View style={styles.modalButtonContainer}>
-                            <TouchableOpacity
-                                onPress={() => setModalVisible(false)}
-                                style={[styles.modalButton, styles.cancelButton]}
-                            >
-                                <Text style={styles.buttonText}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={handleAddEntry}
-                                style={[styles.modalButton, styles.saveButton]}
-                            >
-                                <Text style={styles.buttonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <Text style={styles.modalTitle}>{selectedEntry?.date}</Text>
+                        <Text style={styles.modalText}>{selectedEntry?.entry}</Text>
+                        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                            <Text style={styles.closeButtonText}>Close</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
-            <TouchableOpacity
-            onPress={() => navigation.goBack()}
-                style={styles.goHomeButton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goHomeButton}>
                 <Text style={styles.buttonText}>Go Home</Text>
             </TouchableOpacity>
         </SafeAreaView>
@@ -152,7 +134,15 @@ const Journal: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f0ead6',
+    },
+    input: {
         backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
     },
     entryContainer: {
         flexDirection: 'row',
@@ -164,16 +154,22 @@ const styles = StyleSheet.create({
     },
     entryDate: {
         fontSize: 18,
+        color: '#654321',
     },
-    addButton: {
-        backgroundColor: '#3498db',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
+    entryText: {
+        fontSize: 16,
+        color: 'blue',
     },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#654321',
+    },
+    modalText: {
+        fontSize: 16,
+        color: '#333',
+        marginBottom: 20,
     },
     centeredView: {
         flex: 1,
@@ -196,37 +192,33 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    entryInput: {
-        height: 200,
-        width: '100%',
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20,
-        paddingHorizontal: 10,
-    },
-    modalButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-    },
-    modalButton: {
-        width: '45%',
-        borderRadius: 10,
+    closeButton: {
+        marginTop: 20,
+        backgroundColor: '#8b4513',
         paddingVertical: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingHorizontal: 20,
+        borderRadius: 10,
     },
-    cancelButton: {
-        backgroundColor: 'red',
-    },
-    saveButton: {
-        backgroundColor: 'green',
+    closeButtonText: {
+        color: '#fff',
+        fontSize: 16,
     },
     goHomeButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#8b4513',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+    },
+    addButton: {
+        backgroundColor: '#8b4513',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        marginBottom: 10,
     },
 });
 

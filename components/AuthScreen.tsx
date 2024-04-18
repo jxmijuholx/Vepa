@@ -21,7 +21,6 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
         await createUserWithEmailAndPassword(auth, email, password);
         console.log('User created successfully!');
       }
-      // Navigate to Home screen after successful authentication
       navigation.navigate('Home');
     } catch (error) {
       console.error('Authentication error:', error as any);
@@ -64,16 +63,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f0ead6',
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: '#654321',
   },
   input: {
     width: '80%',
     height: 40,
-    borderColor: '#ddd',
+    borderColor: '#654321',
     borderWidth: 1,
     marginBottom: 16,
     padding: 8,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   toggleText: {
-    color: '#3498db',
+    color: '#8b4513',
     textAlign: 'center',
   },
   bottomContainer: {

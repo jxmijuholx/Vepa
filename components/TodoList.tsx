@@ -113,7 +113,7 @@ function TodoList({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#4d3319', // Ruskea taustaväri
         paddingHorizontal: 20,
         paddingTop: 40,
     },
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginBottom: 20,
         textAlign: 'center',
+        color: '#e6ccb3', // Vaalea tekstiväri
     },
     inputContainer: {
         flexDirection: 'row',
@@ -132,20 +133,21 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 40,
-        borderColor: '#ccc',
+        borderColor: '#ccbba8', // Vaalea reunaväri
         borderWidth: 1,
         marginRight: 10,
         paddingHorizontal: 10,
+        color: '#e6ccb3', // Vaalea tekstiväri
     },
     addButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#8c7355', // Ruskea lisäysnappi
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
         justifyContent: 'center',
     },
     buttonText: {
-        color: '#fff',
+        color: '#e6ccb3', // Vaalea tekstiväri
         fontSize: 18,
         textAlign: 'center',
     },
@@ -157,12 +159,13 @@ const styles = StyleSheet.create({
     todoText: {
         flex: 1,
         fontSize: 18,
+        color: '#e6ccb3', // Vaalea tekstiväri
     },
     doneText: {
         textDecorationLine: 'line-through',
     },
     goBackButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#8c7355', // Ruskea paluunappi
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -170,5 +173,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+
 
 export default TodoList;
