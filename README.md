@@ -44,12 +44,9 @@ npm start
 
 ### Scan the QR code
 
-````
+```
 Android: open the EXPO app and scan it using the built-in scanner
 iOs: Scan the QR with your camera
 ```
 
-## Use it!
-
-- Jami :)
-
+### Start using it!
