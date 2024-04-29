@@ -2,15 +2,15 @@
 
 ![Alt text](assets/home.png)
 
-## TODO LISTA
+## Todo list
 
 ![Alt text](assets/todolist.png)
 
-## PÄIVÄKIRJA
+## Journal
 
 ![Alt text](assets/journal.png)
 
-## POMODORO -AJASTIN
+## Pomodoro timer
 
 ![Alt text](assets/pomodoro.png)
 
