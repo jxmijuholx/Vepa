@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   goHomeButton: {
-    backgroundColor: '#darkred',
+    backgroundColor: '#8b4513',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
