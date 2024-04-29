@@ -47,6 +47,16 @@ npm start
 ```
 Android: open the EXPO app and scan it using the built-in scanner
 iOs: Scan the QR with your camera
+
+Scanning the QR code will open up expo SDK and then it will load the app
 ```
 
-### Start using it!
+### IMPORTANT!
+
+```
+    DO NOT INSERT ANY PERSONAL INFORMATION TO THE APP LIKE YOUR EMAIL, PASSWORD OR DEEPEST DARKEST SECRETS
+    THE APP IS JUST A PROTOTYPE AND IT MAY CONTAIN VULNERABILITIES
+
+    so when you create and account...
+    !! MAKE UP AN IMAGINERY EMAIL AND PASSWORD !!
+```
