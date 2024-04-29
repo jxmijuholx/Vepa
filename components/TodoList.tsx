@@ -102,7 +102,7 @@ function TodoList({ navigation }: { navigation: any }) {
                         keyExtractor={(item) => item.id}
                     />
                     <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.goBackButton}>
-                        <Text style={styles.buttonText}>Go Back to Home</Text>
+                        <Text style={styles.buttonText}>Home</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>

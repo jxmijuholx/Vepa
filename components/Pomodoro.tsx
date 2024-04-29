@@ -95,7 +95,7 @@ const Pomodoro = () => {
         )}
       </View>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goHomeButton}>
-        <Text style={styles.buttonText}>Go Home</Text>
+        <Text style={styles.buttonText}>Home</Text>
       </TouchableOpacity>
     </View>
   );

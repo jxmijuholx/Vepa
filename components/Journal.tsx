@@ -95,7 +95,7 @@ const Journal: React.FC = () => {
         <SafeAreaView style={styles.container}>
             <TextInput
                 style={styles.input}
-                placeholder="Write your entry here"
+                placeholder="Write something here..."
                 multiline
                 value={newEntry}
                 onChangeText={setNewEntry}
@@ -125,7 +125,7 @@ const Journal: React.FC = () => {
                 </View>
             </Modal>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goHomeButton}>
-                <Text style={styles.buttonText}>Go Home</Text>
+                <Text style={styles.buttonText}>Home</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
