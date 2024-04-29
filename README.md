@@ -8,7 +8,7 @@
 
 ## PÄIVÄKIRJA
 
-![Alt text](assets/icon.png)
+![Alt text](assets/journal.png)
 
 ## POMODORO -AJASTIN
 
