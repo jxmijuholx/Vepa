@@ -49,6 +49,8 @@ Android: open the EXPO app and scan it using the built-in scanner
 iOs: Scan the QR with your camera
 
 Scanning the QR code will open up expo SDK and then it will load the app
+
+you can also open it up on the web but then you need to possibly update your project configurations
 ```
 
 ### IMPORTANT!
@@ -58,5 +60,5 @@ Scanning the QR code will open up expo SDK and then it will load the app
     THE APP IS JUST A PROTOTYPE AND IT MAY CONTAIN VULNERABILITIES
 
     so when you create and account...
-    !! MAKE UP AN IMAGINERY EMAIL AND PASSWORD !!
+    !! MAKE UP AN IMAGINERY EMAIL ANd PASSWORD !!
 ```
